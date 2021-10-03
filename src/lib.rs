@@ -76,7 +76,7 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 
         let results = search(&config.query, &contents, config.case_sensitive);
 
-        if results.len() > 1 {
+        if results.len() >= 1 {
             println!("\n{}", config.filenames[i].blue());
             for line in results {
                 let (start, end) =
