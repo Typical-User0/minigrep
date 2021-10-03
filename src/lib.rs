@@ -4,7 +4,6 @@ use std::error::Error;
 use std::fs;
 use std::process::exit;
 
-
 fn parse_string<'a>(
     s: &'a str,
     search: &'a str,
@@ -48,7 +47,6 @@ impl<'a> MatchingLine<'a> {
 
 impl<'a> Config<'a> {
     pub fn new(args: &'a [String]) -> Result<Self, &str> {
-
         if args.len() < 3 {
             return Err("Not enough arguments");
         }
@@ -76,7 +74,7 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 
         let results = search(&config.query, &contents, config.case_sensitive);
 
-        if results.len() > 1 {
+        if results.len() >= 1 {
             println!("\n{}", config.filenames[i].blue());
             for line in results {
                 let (start, end) =
@@ -112,13 +110,14 @@ pub fn search<'a>(
         for line in contents.lines() {
             line_num += 1;
 
-            if line.contains(&query.to_lowercase()) {
+            if line.contains(&query) {
                 results.push(MatchingLine::new(line, query, line_num));
             }
         }
     } else {
         for line in contents.lines() {
             line_num += 1;
+
             if line.to_lowercase().contains(&query.to_lowercase()) {
                 results.push(MatchingLine::new(line, query, line_num));
             }
